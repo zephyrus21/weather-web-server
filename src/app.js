@@ -40,16 +40,29 @@ app.get('/help', (req, res) => {
     })
 })
 
-app.get('/products', (req, res) => {
-    if (!req.query.search) {
+app.get('/weather', (req, res) => {
+    if (!req.query.address) {
         return res.send({
-            error: 'You must provide a search term'
+            error: 'You must provide an address!'
         })
     }
 
-    console.log(req.query.search)
-    res.send({
-        products: []
+    geocode(req.query.address, (error, { latitude, longitude, location } = {}) => {
+        if (error) {
+            return res.send({ error })
+        }
+
+        forecast(latitude, longitude, (error, forecastData) => {
+            if (error) {
+                return res.send({ error })
+            }
+
+            res.send({
+                forecast: forecastData,
+                location,
+                address: req.query.address
+            })
+        })
     })
 })
 
