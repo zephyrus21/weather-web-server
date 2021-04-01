@@ -1,9 +1,12 @@
 const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
+const geocode = require('./utils/geocode')
+const forecast = require('./utils/forecast')
 
 const app = express()
 const port = process.env.PORT || 3000
+
 
 // Define paths for Express config
 const publicDirectoryPath = path.join(__dirname, '../public')
@@ -80,4 +83,8 @@ app.get('*', (req, res) => {
         name: 'Andrew Mead',
         errorMessage: 'Page not found.'
     })
+})
+
+app.listen(port, (req, res) => {
+    console.log('Server up baby!')
 })
